@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ConferLive</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+		}
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+			margin-top: 20px;
+		}
+		.box {
+			background-color: white;
+			width: 300px;
+			height: 400px;
+			margin: 10px;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+		.box h2 {
+			margin-top: 0px;
+		}
+		.box img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			border-radius: 5px;
+			margin-bottom: 10px;
+		}
+		.btn {
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			padding: 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 10px 0px;
+		}
+		.btn:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<h1>Welcome to ConferLive!</h1>
+	<h2>choose our <strong>own platform</strong> for better experience<h2>
+	<h3>other recources:<h3>
+	<div class="container">
+		<div class="box">
+			<img src="https://www.gstatic.com/images/branding/product/1x/meet_2020q4_512dp.png" alt="Google Meet">
+			<h2>Google Meet</h2>
+			<p>Enter the meeting ID to join:</p>
+			<input type="text" id="meetid">
+			<button class="btn" onclick="joinMeeting('https://meet.google.com/', document.getElementById('meetid').value)">Join Meeting</button>
+			<a href="https://meet.google.com/" target="_blank"><button class="btn">Launch Google Meet</button></a>
+		</div>
+		<div class="box">
+			<img src="https://assets.onestore.ms/cdnfiles/onestorerolling-1709-11822/shell/v1/images/header/microsoft-teams-logo-small-2x.png" alt="Microsoft Teams">
+			<h2>Microsoft Teams</h2>
+			<p>Enter the meeting ID to join:</p>
+			<input type="text" id="meetid">
+			<button class="btn" onclick="joinMeeting('https://teams.microsoft.com/l/meetup-join/', document.getElementById('meetid').value)">Join Meeting</button>
+			<a href="https://www.microsoft.com/en-us/microsoft-teams/group-chat-software" target="_blank"><button class="btn">Launch Microsoft Teams</button></a>
+		</div>
+		<div class="box">
+			<img src="https://cdn.zapier.com/storage/services/59b8d3f7c5bc29ac746862baad02d51e.png" alt="Zoom">
+			<h2>Zoom</h2>
+			<p>Enter the meeting ID to join:</p>
+			<input type="text" id="meetid">
+			<button class="btn" onclick="joinMeeting('https://zoom.us/j/', document.getElementById('meetid').value)">Join Meeting</button>
+			<a href="https://zoom.us/" target="_blank"><button class="btn">Launch Zoom</button></a>
+		</div>
+		<div class="box">
+			<img src="#" alt="Own Platform">
+			<h2>Own Platform</h2>
+			<p>Enter the meeting ID to join:</p>
+			<input type="text" id="meetid">
+			<button class="btn" onclick="joinMeeting('#', document.getElementById('meetid').value)">Join Meeting</button>
+			<a href="#" target="_blank"><button class="btn">Launch Own Platform</button></a>
+		</div>
+	</div>
+	<script>
+		function joinMeeting(baseURL, meetID) {
+			window.location.href = baseURL + meetID;
+		}
+	</script>
+</body>
+</html>
+``
