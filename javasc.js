@@ -80,5 +80,24 @@ function App(props) {
   );
 }
 
+function joinMeeting(link, meetid) {
+  // check if current_meet_ids.txt file exists
+  fetch('current_meet_ids.txt').then(function(response) {
+    if (response.ok) {
+      // read file content and check if meetid exists
+      response.text().then(function(text) {
+        if (text.includes(meetid)) {
+          window.open(link.replace("#", meetid));
+        } else {
+          alert("Meeting ID is not found in server as current status.");
+        }
+      });
+    } else {
+      // current_meet_ids.txt not found
+      alert("Meeting ID is not found in server as current status.");
+    }
+  });
+}
+
 export default App;
 
