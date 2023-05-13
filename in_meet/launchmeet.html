@@ -81,6 +81,7 @@
 	</style>
 </head>
 <body>
+	<div id="meeting-id"></div> <!-- new element to display the generated meeting ID -->
 	<div id="video-container">
 		<video id="local-video" autoplay></video>
 	</div>
@@ -108,6 +109,23 @@
 		const messageInput = document.getElementById('message-input');
 		const showChatButton = document.getElementById('toggle-chat');
         const chatBox = document.querySelector('.chat');
+        const meetingIdElement = document.getElementById('meeting-id'); // get the meeting ID element
+
+		// Generate and display random meeting ID
+		function generateMeetingId() {
+			const alphanumeric = 'abcdefghijklmnopqrstuvwxyz0123456789';
+			let id = '';
+			for (let i = 0; i < 8; i++) {
+				id += alphanumeric.charAt(Math.floor(Math.random() * alphanumeric.length));
+			}
+			meetingIdElement.innerText = `Meeting ID: ${id}`; // set the ID to the element
+		}
+
+		generateMeetingId(); // call the function to display the ID
+
+		// Add event listener to generate new meeting ID on click
+		meetingIdElement.addEventListener('click', generateMeetingId);
+
 
 		// Get the local video stream and display it in the center of the
 			navigator.mediaDevices.getUserMedia({video: true, audio: true})
