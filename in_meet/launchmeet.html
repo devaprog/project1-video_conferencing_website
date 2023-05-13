@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ConferLive: Video Conference-in meeting</title>
+	<style>
+		#video-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			background-color: #f2f2f2;
+		}
+		#video-container video {
+			max-width: 100%;
+			max-height: 100%;
+		}
+		.controls {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			padding: 10px;
+			background-color: #333;
+			color: #fff;
+		}
+		.controls button {
+			margin: 5px;
+			padding: 10px;
+			background-color: #fff;
+			color: #333;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		.chat {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			width: 300px;
+			height: 300px;
+			background-color: #fff;
+			border: 1px solid #333;
+			border-radius: 5px;
+			overflow-y: scroll;
+			padding: 10px;
+		}
+		.chat h3 {
+			margin-top: 0;
+		}
+		.chat p {
+			margin-bottom: 5px;
+		}
+		.chat form {
+			display: flex;
+			flex-direction: column;
+			margin-top: 10px;
+		}
+		.chat form textarea {
+			resize: none;
+			height: 50px;
+			padding: 5px;
+			border: 1px solid #333;
+			border-radius: 5px;
+			margin-bottom: 5px;
+			font-size: 14px;
+		}
+		.chat form button {
+			align-self: flex-end;
+			padding: 5px;
+			background-color: #333;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+		.chat.chat-closed {
+            display: none;
+        }
+
+	</style>
+</head>
+<body>
+	<div id="video-container">
+		<video id="local-video" autoplay></video>
+	</div>
+    <div class="controls">
+      <button id="toggle-audio">Mute Mic</button>
+      <button id="toggle-video">Hide Camera</button>
+      <button id="show-participants">See Participants</button>
+      <button id="toggle-chat">Close Chat</button>
+    </div>
+
+	<div class="chat">
+		<h3>Chat</h3>
+		<div id="message-container"></div>
+		<form id="message-form">
+			<textarea id="message-input" placeholder="Type your message here..."></textarea>
+			<button type="submit">Send</button>
+		</form>
+	</div>
+	<script>
+		const video = document.getElementById('local-video');
+		const toggleAudioButton = document.getElementById('toggle-audio');
+		const toggleVideoButton = document.getElementById('toggle-video');
+		const messageContainer = document.getElementById('message-container');
+		const messageForm = document.getElementById('message-form');
+		const messageInput = document.getElementById('message-input');
+		const showChatButton = document.getElementById('toggle-chat');
+        const chatBox = document.querySelector('.chat');
+
+		// Get the local video stream and display it in the center of the
+			navigator.mediaDevices.getUserMedia({video: true, audio: true})
+		.then(stream => {
+			video.srcObject = stream;
+		})
+		.catch(error => {
+			console.error('Error accessing media devices.', error);
+		});
+
+		// Function to toggle audio
+		let isAudioMuted = false;
+		function toggleAudio() {
+			const stream = video.srcObject;
+			const audioTracks = stream.getAudioTracks();
+			for (const track of audioTracks) {
+				track.enabled = !track.enabled;
+			}
+			isAudioMuted = !isAudioMuted;
+			toggleAudioButton.innerText = isAudioMuted ? 'Unmute Mic' : 'Mute Mic';
+		}
+		toggleAudioButton.addEventListener('click', toggleAudio);
+
+		// Function to toggle video
+		let isVideoHidden = false;
+		function toggleVideo() {
+			const stream = video.srcObject;
+			const videoTracks = stream.getVideoTracks();
+			for (const track of videoTracks) {
+				track.enabled = !track.enabled;
+			}
+			isVideoHidden = !isVideoHidden;
+			if (isVideoHidden) {
+				video.style.display = 'none';
+				toggleVideoButton.innerText = 'Show Camera';
+			} else {
+				video.style.display = 'block';
+				toggleVideoButton.innerText = 'Hide Camera';
+			}
+		}
+		toggleVideoButton.addEventListener('click', toggleVideo);
+
+		const showParticipantsButton = document.getElementById('show-participants');
+			showParticipantsButton.addEventListener('click', () => {
+				// TODO: Implement functionality for showing participants
+				alert('Showing participants: you, +0');
+			});
+
+		showChatButton.addEventListener('click', () => {
+			if (chatBox.classList.contains('chat-closed')) {
+			chatBox.classList.remove('chat-closed');
+			showChatButton.innerText = 'Close Chat';
+			} else {
+			chatBox.classList.add('chat-closed');
+			showChatButton.innerText = 'Open Chat';
+			}
+		});
+
+		// Function to send message
+		function sendMessage(event) {
+			event.preventDefault();
+			const message = messageInput.value;
+			const timestamp = new Date().toLocaleTimeString();
+			const messageElement = document.createElement('p');
+			messageElement.innerText = `${timestamp} - You: ${message}`;
+			messageContainer.appendChild(messageElement);
+			messageInput.value = '';
+		}
+		messageForm.addEventListener('submit', sendMessage);
+
+	</script>
+</body>
+</html>
